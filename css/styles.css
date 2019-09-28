@@ -1,0 +1,55 @@
+body {
+    background-color: #242424;
+    font-family: "Helvetica Neue";
+    font-size: 10px;
+}
+
+#disk-title {
+    color: #5488d6;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+#disk-label {
+    color: lightgray;
+    font-size: 12px;
+    padding-bottom: 10px;
+}
+
+#disk-info {
+    color: darkgray;
+    font-size: 12px;
+}
+
+#bar-container {
+    display: flex;
+}
+
+#disk-bar {
+    background: #1c1c1c;
+    width: 90%;
+    height: 20px;
+    margin-bottom: 10px;
+}
+
+#disk-bar:after {
+    content: "";
+    display: block;
+    background: #23adf8;
+    width: 50%;
+    height: 100%;
+}
+
+#disk-image {
+    /* background-color: green; */
+    padding-left: 10px;
+}
+
+hr {
+    color: #303030;
+    height: 1px;
+    background-color: #303030;
+    border: none;
+}

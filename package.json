@@ -1,0 +1,21 @@
+{
+    "name": "mac-hdd-electron",
+    "version": "1.0.0",
+    "description": "An app to track your Mac HDD Usage",
+    "main": "main.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "electron .",
+        "watch": "nodemon --exec 'electron --inspect=5858 .'"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "electron": "^6.0.10",
+        "menubar": "^6.0.8",
+        "nodemon": "^1.19.2",
+        "systeminformation": "^4.14.8",
+        "electron-debug": "^3.0.1"
+    },
+    "dependencies": {}
+}
