@@ -30,11 +30,11 @@ body {
 #disk-bar {
     background: #1c1c1c;
     width: 90%;
-    height: 20px;
+    height: 15px;
     margin-bottom: 10px;
 }
 
-#disk-bar:after {
+#disk-bar-inner {
     content: "";
     display: block;
     background: #23adf8;

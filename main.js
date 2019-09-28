@@ -2,7 +2,7 @@ const { menubar } = require("menubar");
 const diskData = require("./diskdata");
 const ipc = require("electron").ipcMain;
 
-const REFRESH_INTERVAL = 10000;
+const REFRESH_INTERVAL = 50000;
 const DISK_HEIGHT = 100;
 
 const validDiskTypes = ["disk"];
@@ -33,12 +33,19 @@ const getData = () => {
     diskData.getBlockData(blockData => {
         diskData.getFsData(fsData => {
             const blockFilteredData = blockData.filter(
-                element => element.type == "part" && element.mount == "/"
+                element => element.type == "part"
             );
             const fsFilteredData = fsData.filter(
-                element => element.mount == "/"
+                element =>
+                    element.mount == "/" ||
+                    !(
+                        element.mount.includes("firmwaresyncd") ||
+                        element.mount.includes("Preboot") ||
+                        element.mount.includes("private")
+                    )
             );
 
+            diskArray = [];
             fsFilteredData.forEach(element => {
                 const free = element.size - element.used;
                 const used = (element.used / element.size) * 100;
@@ -49,15 +56,14 @@ const getData = () => {
                 if (blockReturned.length > 0) {
                     label = blockReturned[0].label;
                 }
-                console.log(humanFileSize(free));
-                diskArray = [];
+
                 diskArray.push({
                     free: humanFileSize(free),
                     used: used,
                     label: label
                 });
-                console.log(diskArray);
             });
+            console.log(diskArray);
         });
     });
 };
@@ -68,19 +74,21 @@ setInterval(() => {
 
 const triggerData = () => {
     getData();
-    mb.window.setSize(275, 120 * diskArray.length, true);
-    mb.window.webContents.send("data", diskArray);
+    if (mb.window) {
+        mb.window.setSize(275, 120 * diskArray.length, true);
+        mb.window.webContents.send("data", diskArray);
+    }
 };
 
-//console.log(diskData.getFsData(data => console.log(data)));
-//console.log(diskData.getBlockData(data => console.log(data)));
+console.log(diskData.getFsData(data => console.log(data)));
+console.log(diskData.getBlockData(data => console.log(data)));
 
 function humanFileSize(bytes, si) {
     var thresh = si ? 1024 : 1000;
     if (Math.abs(bytes) < thresh) {
         return bytes + " B";
     }
-    var units = si
+    var units = !si
         ? ["kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
         : ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"];
     var u = -1;

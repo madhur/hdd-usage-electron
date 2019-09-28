@@ -21,12 +21,14 @@ const getDomElement = ({ label, used, free }) => {
         ${label}
     </div>
     <div id="bar-container">
-        <div id="disk-bar" style={'width':${used}}></div>
+        <div id="disk-bar"><div id="disk-bar-inner" style="width:${Math.round(
+            used
+        )}%"></div></div>
         <div id="disk-image">
             <img src="./img/hard-drive-icon.png" height="24" width="24" />
         </div>
     </div>
-    <div id="disk-info">${free}</div>
+    <div id="disk-info">${free} free</div>
     <hr />
 </div>`;
 
