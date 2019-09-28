@@ -3,9 +3,7 @@ const diskData = require("./diskdata");
 const ipc = require("electron").ipcMain;
 
 const REFRESH_INTERVAL = 50000;
-const DISK_HEIGHT = 100;
 
-const validDiskTypes = ["disk"];
 let diskArray = [];
 
 const mb = menubar({
@@ -20,13 +18,21 @@ const mb = menubar({
 
 mb.on("ready", () => {
     // console.log(mb);
+    //console.log("ready");
+    triggerData();
+    setInterval(() => {
+        triggerData();
+    }, REFRESH_INTERVAL);
+
     // your app code here
 });
 
 mb.on("after-create-window", () => {
     //mb.window.setSize(275, 100 * 3, true);
     // mb.window.setPosition(100, 100, false);
-    triggerData();
+    //console.log("after-create-window");
+    mb.window.setSize(275, 70 * diskArray.length + 20 + 22 + 8 + 20, true);
+    mb.window.webContents.send("data", diskArray);
 });
 
 const getData = () => {
@@ -44,6 +50,8 @@ const getData = () => {
                         element.mount.includes("private")
                     )
             );
+
+            //const fsFilteredData = fsData;
 
             diskArray = [];
             fsFilteredData.forEach(element => {
@@ -68,20 +76,16 @@ const getData = () => {
     });
 };
 
-setInterval(() => {
-    triggerData();
-}, REFRESH_INTERVAL);
-
 const triggerData = () => {
     getData();
     if (mb.window) {
-        mb.window.setSize(275, 120 * diskArray.length, true);
+        mb.window.setSize(275, 70 * diskArray.length + 20 + 22 + 8, true);
         mb.window.webContents.send("data", diskArray);
     }
 };
 
-console.log(diskData.getFsData(data => console.log(data)));
-console.log(diskData.getBlockData(data => console.log(data)));
+// console.log(diskData.getFsData(data => console.log(data)));
+// console.log(diskData.getBlockData(data => console.log(data)));
 
 function humanFileSize(bytes, si) {
     var thresh = si ? 1024 : 1000;

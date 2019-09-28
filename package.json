@@ -1,14 +1,22 @@
 {
     "name": "mac-hdd-electron",
     "version": "1.0.0",
+    "author": "Madhur Ahuja",
     "description": "An app to track your Mac HDD Usage",
+    "homepage": "http://madhur.co.in",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/madhur/hdd-usage-electron.git"
+    },
+    "bugs": {
+        "url": "https://github.com/madhur/hdd-usage-electron/issues"
+    },
     "main": "main.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "electron .",
         "watch": "nodemon --exec 'electron --inspect=5858 .'"
     },
-    "author": "",
     "license": "ISC",
     "devDependencies": {
         "electron": "^6.0.10",
