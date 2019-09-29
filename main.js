@@ -2,7 +2,7 @@ const { menubar } = require("menubar");
 const diskData = require("./diskdata");
 const ipc = require("electron").ipcMain;
 
-const REFRESH_INTERVAL = 50000;
+const REFRESH_INTERVAL = 5000;
 
 let diskArray = [];
 

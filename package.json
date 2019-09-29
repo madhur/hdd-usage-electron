@@ -15,7 +15,9 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "electron .",
-        "watch": "nodemon --exec 'electron --inspect=5858 .'"
+        "watch": "nodemon --exec 'electron --inspect=5858 .'",
+        "pack": "electron-builder --dir",
+        "dist": "electron-builder"
     },
     "license": "ISC",
     "devDependencies": {
@@ -23,7 +25,17 @@
         "menubar": "^6.0.8",
         "nodemon": "^1.19.2",
         "systeminformation": "^4.14.8",
-        "electron-debug": "^3.0.1"
+        "electron-debug": "^3.0.1",
+        "electron-builder": "^21.2.0"
     },
-    "dependencies": {}
+    "dependencies": {
+        "menubar": "^6.0.8",
+        "systeminformation": "^4.14.8"
+    },
+    "build": {
+        "appId": "in.co.madhur.hddusage",
+        "mac": {
+            "category": "in.co.madhur.hddusage"
+        }
+    }
 }
