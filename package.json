@@ -34,7 +34,6 @@
     },
     "build": {
         "appId": "in.co.madhur.hddusage",
-        "name": "HDD Usage",
         "mac": {
             "category": "public.app-category.utilities"
         }
