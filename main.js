@@ -15,12 +15,12 @@ const secondaryMenu = Menu.buildFromTemplate([
             openAboutWindow();
         }
     },
-    {
-        label: "Preferences",
-        click() {
-            mb.app.quit();
-        }
-    },
+    // {
+    //     label: "Preferences",
+    //     click() {
+    //         mb.app.quit();
+    //     }
+    // },
     {
         label: "Quit",
         click() {
@@ -73,6 +73,7 @@ const mb = menubar({
 });
 
 mb.on("ready", () => {
+    blankIcon();
     triggerData();
     setInterval(() => {
         triggerData();
@@ -87,7 +88,7 @@ mb.on("after-create-window", () => {
     refreshWindow();
 });
 
-const getData = () => {
+const getData = finishCallback => {
     diskData.getBlockData(blockData => {
         diskData.getFsData(fsData => {
             const blockFilteredData = blockData.filter(
@@ -129,22 +130,31 @@ const getData = () => {
                 });
             });
             console.log(diskArray);
+            if (finishCallback) {
+                finishCallback();
+            }
         });
     });
 };
 
 const triggerData = () => {
-    getData();
-    refreshWindow();
+    getData(() => {
+        refreshWindow();
+    });
 };
 
 const refreshWindow = () => {
     if (mb.window) {
         mb.window.setSize(275, 70 * diskArray.length + 20 + 22 + 8 + 23, false);
         mb.window.webContents.send(constants.DATA, diskArray);
-        mb.tray.setTitle(Math.round(diskArray[0].used).toString() + "%");
-        mb.tray.setImage(nativeImage.createEmpty());
     }
+    mb.tray.setTitle(Math.round(diskArray[0].used).toString() + "%");
+    mb.tray.setImage(nativeImage.createEmpty());
+    blankIcon();
+};
+
+const blankIcon = () => {
+    mb.tray.setImage(nativeImage.createEmpty());
 };
 
 function humanFileSize(bytes, si) {
