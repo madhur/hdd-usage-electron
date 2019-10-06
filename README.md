@@ -17,6 +17,8 @@
 
 > An app to track your Mac HDD Usage
 
+<img src="https://raw.githubusercontent.com/madhur/hdd-usage-electron/master/media/screenshot.png" />
+
 ### 🏠 [Homepage](http://madhur.co.in)
 
 ## Install
