@@ -1,6 +1,6 @@
 const { menubar } = require("menubar");
 const diskData = require("./js/diskdata");
-const { app, Menu, BrowserWindow, ipcMain } = require("electron");
+const { app, Menu, BrowserWindow, ipcMain, nativeImage } = require("electron");
 const constants = require("./js/constants");
 
 const REFRESH_INTERVAL = 5000;
@@ -43,6 +43,7 @@ const openAboutWindow = () => {
         title: "About HDD Usage",
         minimizable: false,
         fullscreenable: false,
+        backgroundColor: "#242424",
         webPreferences: { nodeIntegration: true }
     });
 
@@ -102,6 +103,11 @@ const getData = () => {
                     )
             );
 
+            fsFilteredData.sort((el1, el2) => {
+                if (el1.mount == "/") {
+                    return 1;
+                }
+            });
             //const fsFilteredData = fsData;
 
             diskArray = [];
@@ -134,10 +140,10 @@ const triggerData = () => {
 
 const refreshWindow = () => {
     if (mb.window) {
-        mb.window.setSize(275, 70 * diskArray.length + 20 + 22 + 8 + 18, false);
-        console.log(constants.DATA);
+        mb.window.setSize(275, 70 * diskArray.length + 20 + 22 + 8 + 23, false);
         mb.window.webContents.send(constants.DATA, diskArray);
         mb.tray.setTitle(Math.round(diskArray[0].used).toString() + "%");
+        mb.tray.setImage(nativeImage.createEmpty());
     }
 };
 

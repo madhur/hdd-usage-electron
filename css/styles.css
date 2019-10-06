@@ -69,11 +69,17 @@ hr {
 }
 
 #about-icon {
-    flex: 1;
+    /* flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: 5px; */
+
+    flex: 1; /* shorthand for: flex-grow: 1, flex-shrink: 1, flex-basis: 0 */
+    display: flex;
+    justify-content: flex-start;
     padding-top: 5px;
+    margin-left: 10px;
 }
 
 #close-icon {
