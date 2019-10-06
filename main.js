@@ -1,10 +1,52 @@
 const { menubar } = require("menubar");
-const diskData = require("./diskdata");
-const ipc = require("electron").ipcMain;
+const diskData = require("./js/diskdata");
+const { app, Menu, BrowserWindow } = require("electron");
 
 const REFRESH_INTERVAL = 5000;
 
 let diskArray = [];
+var aboutWindow = null;
+
+const secondaryMenu = Menu.buildFromTemplate([
+    {
+        label: "About",
+        click() {
+            if (aboutWindow) {
+                aboutWindow.focus();
+                return;
+            }
+
+            aboutWindow = new BrowserWindow({
+                height: 155,
+                resizable: false,
+                width: 370,
+                title: "About HDD Usage",
+                minimizable: false,
+                fullscreenable: false,
+                webPreferences: { nodeIntegration: true }
+            });
+
+            aboutWindow.loadURL("file://" + __dirname + "/views/about.html");
+
+            aboutWindow.on("closed", function() {
+                aboutWindow = null;
+            });
+        }
+    },
+    {
+        label: "Preferences",
+        click() {
+            mb.app.quit();
+        }
+    },
+    {
+        label: "Quit",
+        click() {
+            mb.app.quit();
+        },
+        accelerator: "CommandOrControl+Q"
+    }
+]);
 
 const mb = menubar({
     browserWindow: {
@@ -17,22 +59,18 @@ const mb = menubar({
 });
 
 mb.on("ready", () => {
-    // console.log(mb);
-    //console.log("ready");
     triggerData();
     setInterval(() => {
         triggerData();
     }, REFRESH_INTERVAL);
 
-    // your app code here
+    mb.tray.on("right-click", () => {
+        mb.tray.popUpContextMenu(secondaryMenu);
+    });
 });
 
 mb.on("after-create-window", () => {
-    //mb.window.setSize(275, 100 * 3, true);
-    // mb.window.setPosition(100, 100, false);
-    //console.log("after-create-window");
-    mb.window.setSize(275, 70 * diskArray.length + 20 + 22 + 8 + 20, true);
-    mb.window.webContents.send("data", diskArray);
+    refreshWindow();
 });
 
 const getData = () => {
@@ -78,14 +116,16 @@ const getData = () => {
 
 const triggerData = () => {
     getData();
-    if (mb.window) {
-        mb.window.setSize(275, 70 * diskArray.length + 20 + 22 + 8, true);
-        mb.window.webContents.send("data", diskArray);
-    }
+    refreshWindow();
 };
 
-// console.log(diskData.getFsData(data => console.log(data)));
-// console.log(diskData.getBlockData(data => console.log(data)));
+const refreshWindow = () => {
+    if (mb.window) {
+        mb.window.setSize(275, 70 * diskArray.length + 20 + 22 + 8, false);
+        mb.window.webContents.send("data", diskArray);
+        mb.tray.setTitle(Math.round(diskArray[0].used).toString() + "%");
+    }
+};
 
 function humanFileSize(bytes, si) {
     var thresh = si ? 1024 : 1000;
