@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "author": "Madhur Ahuja",
     "description": "An app to track your Mac HDD Usage",
-    "homepage": "http://madhur.co.in",
+    "homepage": "https://github.com/madhur/hdd-usage-electron",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/madhur/hdd-usage-electron.git"

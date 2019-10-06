@@ -1,4 +1,5 @@
 const ipc = require("electron").ipcRenderer;
+
 ipc.on("data", (event, arg) => {
     refreshDom(arg);
 });
@@ -33,4 +34,20 @@ const getDomElement = ({ label, used, free }) => {
 </div>`;
 
     return str;
+};
+
+const openAboutWindow = () => {
+    ipc.send("aobut_window_message");
+};
+
+document.getElementById("about-window-anchor").addEventListener("click", () => {
+    openAboutWindow();
+});
+
+document.getElementById("quit-window-anchor").addEventListener("click", () => {
+    sendQuitMessage();
+});
+
+const sendQuitMessage = () => {
+    ipc.send("quit_message");
 };

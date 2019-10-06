@@ -1,6 +1,7 @@
 const { menubar } = require("menubar");
 const diskData = require("./js/diskdata");
-const { app, Menu, BrowserWindow } = require("electron");
+const { app, Menu, BrowserWindow, ipcMain } = require("electron");
+const constants = require("./js/constants");
 
 const REFRESH_INTERVAL = 5000;
 
@@ -11,26 +12,7 @@ const secondaryMenu = Menu.buildFromTemplate([
     {
         label: "About",
         click() {
-            if (aboutWindow) {
-                aboutWindow.focus();
-                return;
-            }
-
-            aboutWindow = new BrowserWindow({
-                height: 155,
-                resizable: false,
-                width: 370,
-                title: "About HDD Usage",
-                minimizable: false,
-                fullscreenable: false,
-                webPreferences: { nodeIntegration: true }
-            });
-
-            aboutWindow.loadURL("file://" + __dirname + "/views/about.html");
-
-            aboutWindow.on("closed", function() {
-                aboutWindow = null;
-            });
+            openAboutWindow();
         }
     },
     {
@@ -47,6 +29,37 @@ const secondaryMenu = Menu.buildFromTemplate([
         accelerator: "CommandOrControl+Q"
     }
 ]);
+
+const openAboutWindow = () => {
+    if (aboutWindow) {
+        aboutWindow.focus();
+        return;
+    }
+
+    aboutWindow = new BrowserWindow({
+        height: 155,
+        resizable: false,
+        width: 370,
+        title: "About HDD Usage",
+        minimizable: false,
+        fullscreenable: false,
+        webPreferences: { nodeIntegration: true }
+    });
+
+    aboutWindow.loadURL("file://" + __dirname + "/views/about.html");
+
+    aboutWindow.on("closed", function() {
+        aboutWindow = null;
+    });
+};
+
+ipcMain.on(constants.ABOUT_WINDOW, (event, args) => {
+    openAboutWindow();
+});
+
+ipcMain.on(constants.QUIT, (event, args) => {
+    app.quit();
+});
 
 const mb = menubar({
     browserWindow: {
@@ -121,8 +134,9 @@ const triggerData = () => {
 
 const refreshWindow = () => {
     if (mb.window) {
-        mb.window.setSize(275, 70 * diskArray.length + 20 + 22 + 8, false);
-        mb.window.webContents.send("data", diskArray);
+        mb.window.setSize(275, 70 * diskArray.length + 20 + 22 + 8 + 18, false);
+        console.log(constants.DATA);
+        mb.window.webContents.send(constants.DATA, diskArray);
         mb.tray.setTitle(Math.round(diskArray[0].used).toString() + "%");
     }
 };

@@ -53,3 +53,33 @@ hr {
     background-color: #303030;
     border: none;
 }
+
+#bottom-menu {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+#settings-icon {
+    flex: 1; /* shorthand for: flex-grow: 1, flex-shrink: 1, flex-basis: 0 */
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 5px;
+    margin-left: 10px;
+}
+
+#about-icon {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 5px;
+}
+
+#close-icon {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 10px;
+    padding-top: 5px;
+}
