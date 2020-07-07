@@ -21,7 +21,7 @@
     },
     "license": "ISC",
     "devDependencies": {
-        "electron": "^6.0.10",
+        "electron": "^7.2.4",
         "menubar": "^6.0.8",
         "nodemon": "^1.19.2",
         "systeminformation": "^4.14.8",
