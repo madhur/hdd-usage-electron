@@ -2,6 +2,9 @@ const { menubar } = require("menubar");
 const diskData = require("./js/diskdata");
 const { app, Menu, BrowserWindow, ipcMain, nativeImage } = require("electron");
 const constants = require("./js/constants");
+// const debug = require('electron-debug');
+
+// debug();
 
 const REFRESH_INTERVAL = 5000;
 
@@ -66,10 +69,10 @@ const mb = menubar({
     browserWindow: {
         width: 275,
         height: 120,
-        resizable: false
+        resizable: false,
+        webPreferences: { nodeIntegration: true }
     },
-    position: "bottomCenter",
-    webPreferences: { nodeIntegration: true }
+    position: "bottomCenter"
 });
 
 mb.on("ready", () => {
